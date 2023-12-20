@@ -1,0 +1,20 @@
+<body>
+  <div class="container">
+    <h1>📚 Your Journaling Weekly Digest</h1>
+    <p><%= greeting %></p>
+    <% highlights.forEach(function(highlight) { %>
+    <h2><%= highlight.emoji %> <%= highlight.title %></h2>
+    <p><%= highlight.text %></p>
+    <% }); %>
+    <hr />
+    <p><%= closingMessage %></p>
+    <hr />
+    <p>
+      How did this digest resonate with you? Your feedback directly shapes and
+      personalizes your future digests.
+      <a href="<%= baseUrl %>/feedback?digest_id=<%= digestId %>"
+        >Share your thoughts</a
+      >, and let's make the next one even better!
+    </p>
+  </div>
+</body>

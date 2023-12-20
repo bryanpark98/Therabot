@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notion Journal Setup</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Notion Journal Setup</h1>
+
+      <div>
+        <h3>📚 Step 1: Create a notebook</h3>
+        <p>
+          You can use any database-backed journal with this integration, for
+          ease of use, we recommend you start with the default Notion "Journal"
+          template:
+        </p>
+        <ul>
+          <li>Open Notion</li>
+          <li>Click "New Page" in the top left corner</li>
+          <li>Click "Templates"</li>
+          <li>Search for "Journal"</li>
+          <li>
+            Click "Get Template" (It may take a while for the page to be
+            created, wait a little bit for it to show up)
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>🔗 Step 2: Add the integration</h3>
+        <p>
+          Authorize the integration to interact with whatever page you are going
+          to journal in:
+        </p>
+        <div>
+          <img src="/images/authorize.png" alt="Step 2 Image" width="300" />
+        </div>
+        <a
+          href="https://api.notion.com/v1/oauth/authorize?client_id=f193a33f-4624-4f80-8245-94a31b138352&response_type=code&owner=user&redirect_uri=https%3A%2F%2Ftherabot-6f55c2bb2df3.herokuapp.com%2Fnotion%2Fregistration"
+          >Authorize with Notion</a
+        >
+      </div>
+
+      <div>
+        <h3>📝 Step 3: Enter your information</h3>
+        <p>
+          After you authorize the Notion integration, you will be redirected to
+          a user registration form. Fill out the user registration form to let
+          us know how to read your journal database.
+        </p>
+      </div>
+
+      <div>
+        <h3>✍️ Step 4: Journal</h3>
+        <p>
+          Journal any way you want to! Feel free to change up the format of your
+          pages and your database columns, as long as the id of your journal
+          database stays the same, we can work with it!
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

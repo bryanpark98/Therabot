@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notion User Registration</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="errorMessage" <% if(!code) { %>
+        style="display: block"<% } else { %>style="display: none"<% } %>> ❌
+        Error: The "code" parameter is missing from the URL. Please check the
+        link and try again.
+      </div>
+      <div id="registrationContainer" <% if(code) { %>
+        style="width: 100%"<% } else { %>style="display: none"<% } %>>
+        <h1>Notion User Registration</h1>
+        <p>
+          Welcome to the Notion user registration! Please fill out the form
+          below to get started. 🚀
+        </p>
+        <form
+          id="registrationForm"
+          action="/api/v1/notion/register-user"
+          method="POST"
+          onsubmit="return submitForm(event);"
+        >
+          <input type="hidden" name="oauthCode" value="<%= code || '' %>" />
+          <label for="databaseUrl">🔗 Database URL:</label>
+          <p>
+            <i
+              >Find this by pressing '...' on the top right corner of your
+              notion Journal Database, then copy it to your clipboard by
+              pressing 'Copy link to view'</i
+            >
+          </p>
+          <input
+            type="text"
+            id="databaseUrl"
+            name="databaseUrl"
+            placeholder="Your journal database viewing URL"
+            required
+          />
+          <!-- <img class="shadow" src="/images/databaseUrlInstruction.png" alt="Instructional Image" width="300"> -->
+          <label for="emailAddress">📧 Email Address:</label>
+          <input
+            type="email"
+            id="emailAddress"
+            name="emailAddress"
+            placeholder="youremail@example.com"
+            required
+          />
+          <label for="introduction">👋 Introduction:</label>
+          <textarea
+            id="introduction"
+            name="introduction"
+            rows="4"
+            placeholder="Let us know a little bit about you, e.g., 'Hi, I'm Jane!'"
+            required
+          ></textarea>
+          <button type="submit" id="submitButton">
+            Register 📤
+            <span id="loadingSpinner" role="status" aria-hidden="true"></span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      async function submitForm(event) {
+        event.preventDefault();
+
+        const form = document.getElementById("registrationForm");
+        const submitButton = document.getElementById("submitButton");
+        const loadingSpinner = document.getElementById("loadingSpinner");
+
+        // Disable the submit button and show the loading spinner
+        submitButton.disabled = true;
+        loadingSpinner.style.display = "inline";
+
+        const formDataObj = {};
+        new FormData(form).forEach((value, key) => {
+          formDataObj[key] = value;
+        });
+
+        try {
+          const response = await fetch("/api/v1/notion/register-user", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ request: formDataObj }),
+          });
+
+          const jsonResponse = await response.json();
+          window.location.href = "/notion/thank-you";
+        } catch (error) {
+          console.log(error);
+          alert("🌐 Network error! Please try again later.");
+        }
+
+        // Re-enable the submit button and hide the loading spinner
+        submitButton.disabled = false;
+        loadingSpinner.style.display = "none";
+
+        return false;
+      }
+    </script>
+  </body>
+</html>

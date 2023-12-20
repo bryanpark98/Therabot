@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feedback</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="errorMessage" <% if(!digestId) { %>
+        style="display: block"<% } else { %>style="display: none"<% } %>> ❌
+        Error: The "digestId" parameter is missing. Please check and try again.
+      </div>
+      <div id="feedbackContainer" <% if(digestId) { %>
+        style="width: 100%"<% } else { %>style="display: none"<% } %>>
+        <h1>Journal Buddy Feedback</h1>
+        <p>
+          We're eager to know how our recent digest landed with you. Your
+          insights play a pivotal role in tailoring upcoming ones. Let's
+          collaborate and refine your experience!
+        </p>
+        <form
+          id="feedbackForm"
+          action="/api/v1/feedback"
+          method="POST"
+          onsubmit="return submitForm(event);"
+        >
+          <input
+            type="hidden"
+            id="digestId"
+            name="digestId"
+            value="<%= digestId || '' %>"
+            required
+          />
+
+          <textarea
+            id="text"
+            name="text"
+            rows="4"
+            placeholder="Your feedback here..."
+            required
+          ></textarea>
+
+          <button type="submit" id="submitButton">
+            Submit Feedback 📤
+            <span id="loadingSpinner" role="status" aria-hidden="true"></span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      async function submitForm(event) {
+        event.preventDefault();
+
+        const form = document.getElementById("feedbackForm");
+        const submitButton = document.getElementById("submitButton");
+        const loadingSpinner = document.getElementById("loadingSpinner");
+
+        // Disable the submit button and show the loading spinner
+        submitButton.disabled = true;
+        loadingSpinner.style.display = "inline";
+
+        const formDataObj = {};
+        new FormData(form).forEach((value, key) => {
+          formDataObj[key] = value;
+        });
+
+        try {
+          const response = await fetch("/api/v1/feedback", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ request: formDataObj }),
+          });
+
+          const jsonResponse = await response.json();
+          console.log(jsonResponse);
+          window.location.href = "/feedback/thank-you";
+        } catch (error) {
+          console.log(error);
+          alert("🌐 Network error! Please try again later.");
+        }
+
+        // Re-enable the submit button and hide the loading spinner
+        submitButton.disabled = false;
+        loadingSpinner.style.display = "none";
+
+        return false;
+      }
+    </script>
+  </body>
+</html>
